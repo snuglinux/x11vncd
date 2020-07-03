@@ -1,0 +1,38 @@
+#!/bin/bash
+
+CURRENT_VERSION=0.0.0
+INSTALL_PREFIX=/usr
+
+if [[ $EUID -ne 0 ]]; then
+   echo -e "ERROR: You need to be root";
+   exit 1
+fi
+
+CONF_FILE="/etc/x11vncd.conf"
+if ! [ -f $CONF_FILE ]; then
+   echo "Error: $CONF_FILE configuration file not found!"
+   exit 1;
+fi
+
+#Delay for a successful launch
+sleep 5
+
+xauth=`echo $(find-auth)`
+
+while read line ; do
+   if [ "${line:0:1}" != "#" -o "${line}" = "" ]; then
+      if [[ "$line" =~ .*"-rfbauth".* ]]; then
+         file_pass=`echo $line | sed "s|-rfbauth||";`
+         if ! [ -f $file_pass ] ; then
+            echo "Error: User authentication file does not exist $file_pass";
+            echo "Run the «sudo x11vnc -storepasswd $file_pass» command"
+            exit;
+         fi
+      fi
+      PARAMETERS+="$line ";
+   fi
+done < $CONF_FILE
+
+${INSTALL_PREFIX}/bin/x11vnc $PARAMETERS -auth $xauth
+
+

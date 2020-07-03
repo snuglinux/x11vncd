@@ -1,0 +1,15 @@
+[Unit]
+Description=x11vnc VNC Server for X11
+Requires=display-manager.service
+After=display-manager.service
+StartLimitBurst=10
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/x11vncd
+ExecStop=/usr/bin/killall x11vnc
+Restart=on-failure
+Restart-sec=2
+
+[Install]
+WantedBy=graphical.target

@@ -1,0 +1,39 @@
+#! /bin/sh
+
+# GDM
+if [ -f '/var/lib/gdm/:0.Xauth' ]; then
+   echo '/var/lib/gdm/:0.Xauth';
+   exit;
+fi
+
+if [ -f '/run/user/120/gdm/Xauthority' ]; then
+   echo '/run/user/120/gdm/Xauthority';
+   exit;
+fi
+
+# Lightdm
+if [ -f '/var/run/lightdm/root/\:0' ]; then
+   echo '/var/run/lightdm/root/\:0';
+   exit;
+fi
+
+# LXDM
+if [ -f '/var/run/lxdm/lxdm-\:0.auth' ]; then
+   echo '/var/run/lxdm/lxdm-\:0.auth';
+   exit;
+fi
+
+# SLIM
+if [ -f '/var/run/slim.auth' ]; then
+   echo '/var/run/slim.auth';
+   exit;
+fi
+
+# SDDM
+sddm_auth=`echo $(/usr/bin/find /var/run/sddm/ -type f)`
+if ! [ -z "${sddm_auth}" ]; then
+   echo $sddm_auth;
+   exit;
+fi
+
+
