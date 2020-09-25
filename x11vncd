@@ -33,6 +33,10 @@ while read line ; do
    fi
 done < $CONF_FILE
 
-${INSTALL_PREFIX}/bin/x11vnc $PARAMETERS -auth $xauth
+if [ -z "$xauth" ]; then
+   ${INSTALL_PREFIX}/bin/x11vnc $PARAMETERS
+else
+   ${INSTALL_PREFIX}/bin/x11vnc $PARAMETERS -auth $xauth
+fi
 
 

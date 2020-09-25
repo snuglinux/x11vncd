@@ -30,10 +30,11 @@ if [ -f '/var/run/slim.auth' ]; then
 fi
 
 # SDDM
-sddm_auth=`echo $(/usr/bin/find /var/run/sddm/ -type f)`
-if ! [ -z "${sddm_auth}" ]; then
-   echo $sddm_auth;
-   exit;
+if [ -d "/var/run/sddm/" ]; then
+   sddm_auth=`echo $(/usr/bin/find /var/run/sddm/ -type f)`
+   if ! [ -z "${sddm_auth}" ]; then
+      echo $sddm_auth;
+      exit;
+   fi
 fi
-
 
