@@ -3,11 +3,6 @@
 CURRENT_VERSION=0.0.0
 INSTALL_PREFIX=/usr
 
-if [[ $EUID -ne 0 ]]; then
-   echo -e "ERROR: You need to be root";
-   exit 1
-fi
-
 CONF_FILE="/etc/x11vncd.conf"
 if ! [ -f $CONF_FILE ]; then
    echo "Error: $CONF_FILE configuration file not found!"
